@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">texteditor2</string>
+    <string name="app_name">TextEditor2</string>
+    <string name="undo_button">Undo</string>
+    <string name="redo_button">Redo</string>
+    <string name="undo_button_description">Undo the last action</string>
+    <string name="redo_button_description">Redo the previously undone action</string>
+    <string name="editor_hint">Enter your text here</string>
+
 </resources>

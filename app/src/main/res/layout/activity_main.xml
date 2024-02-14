@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:autofillHints="none">
 
-    <TextView
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:hint="@string/editor_hint"
+        android:autofillHints="text"
+        android:layout_above="@+id/buttonUndo" />
+
+    <Button
+        android:id="@+id/buttonUndo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/undo_button"
+        android:contentDescription="@string/undo_button_description"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:minWidth="48dp"
+        android:onClick="onUndoClick"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/buttonRedo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/redo_button"
+        android:contentDescription="@string/redo_button_description"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/buttonUndo"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:minWidth="48dp"
+        android:onClick="onRedoClick"/>
+</RelativeLayout>
