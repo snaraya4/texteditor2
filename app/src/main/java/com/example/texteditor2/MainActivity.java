@@ -1,34 +1,28 @@
 package com.example.texteditor2;
 
-import android.os.Bundle; //for handling saved instances
-
-//for handling text
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-
-import android.view.View; //for working with UI components
-
-//for ui widgets like buttons and edit ext components
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-//for providing compatibility with older android versions
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Stack; //for stack
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
-    //AppcompatActivity is an Android Support class for activities
-    private EditText editText;  //input text field reference
-    private Button buttonUndo, buttonRedo; //button references
-    private Stack<String> undoStack, redoStack; //to maintain history of changes
+
+    private EditText editText;
+    private Button buttonUndo, buttonRedo;
+    private Stack<String> undoStack, redoStack;
+    private boolean isUndoOrRedo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //using specific id
         editText = findViewById(R.id.editText);
         buttonUndo = findViewById(R.id.buttonUndo);
         buttonRedo = findViewById(R.id.buttonRedo);
@@ -36,40 +30,61 @@ public class MainActivity extends AppCompatActivity {
         undoStack = new Stack<>();
         redoStack = new Stack<>();
 
-        new TextWatcher() {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String text = editable.toString();
-                undoStack.push(text);
-                buttonRedo.setEnabled(false);
+                if (!isUndoOrRedo) {
+                    String text = editable.toString();
+                    undoStack.push(text);
+                    buttonRedo.setEnabled(false);
+                }
             }
-        };
+        });
     }
 
     public void onUndoClick(View view) {
         if (!undoStack.isEmpty()) {
+            isUndoOrRedo = true;
+            // Save the cursor position
+            int cursorPosition = editText.getSelectionStart();
+
             redoStack.push(undoStack.pop());
-            if (!undoStack.isEmpty()) {
-                editText.setText(undoStack.peek());
-            } else {
-                editText.setText("");
+            String undoText = undoStack.isEmpty() ? "" : undoStack.peek();
+            editText.setText(undoText);
+
+            // Restore the cursor position
+            if (cursorPosition > undoText.length()) {
+                cursorPosition = undoText.length();
             }
+            editText.setSelection(cursorPosition);
+
             buttonRedo.setEnabled(true);
+            isUndoOrRedo = false;
         }
     }
 
+
     public void onRedoClick(View view) {
         if (!redoStack.isEmpty()) {
-            editText.setText(redoStack.pop());
+            isUndoOrRedo = true;
+            String redoText = redoStack.pop();
+            editText.setText(redoText);
+            undoStack.push(redoText);
+
+            // Set cursor position to the end of the text
+            editText.setSelection(redoText.length());
+
             buttonUndo.setEnabled(true);
+            isUndoOrRedo = false;
         }
     }
+
+
+
 }

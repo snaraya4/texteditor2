@@ -10,14 +10,15 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top|start"
-        android:inputType="textMultiLine"
-        android:scrollbars="vertical"
-        android:textSize="18sp"
-        android:padding="16dp"
-        android:hint="@string/editor_hint"
+        android:layout_above="@+id/buttonUndo"
         android:autofillHints="text"
-        android:layout_above="@+id/buttonUndo" />
+        android:gravity="top|start"
+        android:hint="@string/editor_hint"
+        android:inputType="textMultiLine"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:textColorHint="#546E7A"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/buttonUndo"
